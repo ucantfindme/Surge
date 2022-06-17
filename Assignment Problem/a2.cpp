@@ -47,10 +47,14 @@ class Student{
 void assignStudentOptimal(map<string,Course>coursemap,map<string,Student>studentmap){
     int m=coursemap.size(),n=studentmap.size();
     queue<string>priorStudents;
-    queue<string>nonpriorStudents;
+    map<string,queue<string>>nonpriorStudents;
+    int np=0;
     for(auto i: studentmap){
         if(i.second.prefCourses)priorStudents.push(i.first);
-        else nonpriorStudents.push(i.first);
+        else{
+            nonpriorStudents[i.second.deg].push(i.first);
+            np++;
+        }
     }
     while(!priorStudents.empty()){
         string student=priorStudents.front();
@@ -88,7 +92,23 @@ void assignStudentOptimal(map<string,Course>coursemap,map<string,Student>student
                 priorStudents.push(student);
             }
             else{
-                nonpriorStudents.push(student);
+                nonpriorStudents[studentmap[student].deg].push(student);
+                np++;
+            }
+        }
+    }
+    for(auto course : coursemap){
+        while(np!=0 && course.second.assignedTAs.size()<course.second.lenprefTA){
+            for(int i=0;i<course.second.lenprefProg;i++){
+                if(!nonpriorStudents[course.second.prefProg[i]].empty()){
+                    string student=nonpriorStudents[course.second.prefProg[i]].front();
+                    nonpriorStudents[course.second.prefProg[i]].pop();
+                    np--;
+                    tuple<int,int,string>pri=make_tuple(-1,-i,student);
+                    course.second.assignedTAs.push(pri);
+                    studentmap[student].assigned=course.first;
+                    break;
+                }
             }
         }
     }
