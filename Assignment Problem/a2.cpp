@@ -12,12 +12,12 @@ class Course{
     public:
         string cid;
         int tasReq;
-        string* prefTA;
+        vector<string> prefTA;
         int lenprefTA;
-        string* prefProg;
+        vector<string> prefProg;
         int lenprefProg;
-        priority_queue<tuple<int,int,string>> assignedTAs;
-        Course(string id,int maxTAs,string* prefTAList,string* prefProgList,int n,int m){
+        priority_queue<tuple<int,int,string> > assignedTAs;
+        Course(string id="",int maxTAs=0,vector<string> prefTAList={},vector<string> prefProgList={},int n=0,int m=0){
             cid=id;
             tasReq=maxTAs;
             prefTA=prefTAList;
@@ -31,26 +31,27 @@ class Student{
     public:
         string sid;
         string deg;
-        string* prefCourses;
+        vector<string> prefCourses;
         int lenprefCourse;
         int top;
-        string assigned = "-";
-        Student(string id,string degree,string* prefCou,int n){
+        string assigned;
+        Student(string id="",string degree="",vector<string> prefCou={},int n=0){
             sid=id;
             deg=degree;
             prefCourses=prefCou;
             lenprefCourse=n;
             top=0;
+            assigned="";
         }
 };
 
 void assignStudentOptimal(map<string,Course>coursemap,map<string,Student>studentmap){
     int m=coursemap.size(),n=studentmap.size();
     queue<string>priorStudents;
-    map<string,queue<string>>nonpriorStudents;
+    map<string,queue<string> >nonpriorStudents;
     int np=0;
     for(auto i: studentmap){
-        if(i.second.prefCourses)priorStudents.push(i.first);
+        if(!i.second.prefCourses.empty())priorStudents.push(i.first);
         else{
             nonpriorStudents[i.second.deg].push(i.first);
             np++;
@@ -112,8 +113,76 @@ void assignStudentOptimal(map<string,Course>coursemap,map<string,Student>student
             }
         }
     }
+    for(auto i: coursemap){
+        cout<<i.first<<" ";
+        vector<string>temp;
+        while(!i.second.assignedTAs.empty()){
+            temp.push_back(get<2>(i.second.assignedTAs.top()));
+            i.second.assignedTAs.pop();
+        }
+        for(auto j=temp.rbegin();j<temp.rend();j++)cout<<*j<<" ";
+        cout<<"\n";
+    }
 }
-
+vector<vector<string> > getfilecontents(string fname){
+    vector<vector<string> > content;
+    vector<string> row;
+    string line, word;
+    fstream file (fname, ios::in);
+    if(file.is_open()){
+        while(getline(file, line)){
+            row.clear();
+            stringstream str(line);
+            while(getline(str, word, ','))
+                row.push_back(word);
+            content.push_back(row);
+        }
+    }
+    else cout<<"Could not open the file\n";
+    return content;
+}
 int main(){
-    
+    string coursefile = "2022-23-I-FacultyChoices.csv";
+    string studentfile = "2022-23-I-StudentChoices.csv";
+    vector<vector<string> >coursedata,studentdata;
+    coursedata=getfilecontents(coursefile);
+    studentdata=getfilecontents(studentfile);
+
+    map<string,Course> coursemap;
+    for(int i=1;i<coursedata.size();i++){
+        string id=coursedata[i][2];
+        if(id=="-")continue;
+        int maxTAs=atoi(&coursedata[i][4][0]);
+        //cout<<id<<" "<<maxTAs<<"\n";
+        if(maxTAs<1)continue;
+        vector<string> prefTAList;
+        for(int j=5;j<15;j++){
+            if(coursedata[i][j]!="-")prefTAList.push_back(coursedata[i][j]);
+            else break;
+        }
+        vector<string> prefProgList;
+        for(int j=15;j<19;j++){
+            if(coursedata[i][j]!="-")prefProgList.push_back(coursedata[i][j]);
+            else break;
+        }
+        int n=prefTAList.size();
+        int m=prefProgList.size();
+        coursemap[id] = * new Course(id,maxTAs,prefTAList,prefProgList,n,m);
+    }
+
+    map<string,Student>studentmap;
+    for(int i=1;i<studentdata.size();i++){
+        string id=studentdata[i][1];
+        string deg=studentdata[i][4];
+        vector<string> prefCou;
+        for(int j=8;j<38;j++){
+            if(coursemap.find(studentdata[i][j])==coursemap.end())continue;
+            prefCou.push_back(studentdata[i][j]);
+        }
+        int n=prefCou.size();
+        studentmap[id]=*new Student(id,deg,prefCou,n);
+    }
+    assignStudentOptimal(coursemap,studentmap);
+    //for(auto i:studentmap)cout<<i.first<<" "<<i.second.deg<<"\n";
+    return 0;
 }
