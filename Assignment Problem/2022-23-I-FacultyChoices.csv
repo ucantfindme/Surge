@@ -2,12 +2,12 @@ SNo,Faculty,Course,TA Cnt Req (Min.),TA Cnt Req (Max.),TA Pref (1),TA Pref (2),T
 1,Amey Karkare,CS738,0,0,,,,,,,,,,,,,,,,,,,
 2,Amitangshu Pal,CS698F,2,3,21111021,21111409,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-
 4,Arnab Bhattacharya,CS798B,2,12,19111265,20111272,17211261,21111268,-,-,-,-,-,-,PhD,MS,MTech,-,-,-,-,-,-
-5,Ashutosh Modi,-,,,,,,,,,,,,,,,,,,,,,
+5,Ashutosh Modi,DPGC TA,2,4,,,,,,,,,,,PhD,MTech,MS,,,,,,
 6,Debadatta Mishra,CS422,2,3,18111263,21111272,19111277,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-
 7,Debapriya Basu Roy,CS798C,1,2,20111278,-,-,-,-,-,-,-,-,-,PhD,-,-,-,-,-,-,-,-
 8,Hamim Zafar,CS690,3,5,20111262,20111268,20111414,-,-,-,-,-,-,-,PhD,MS,-,-,-,-,-,-,-
 9,Indranil Saha,CS637,6,6,19111261,19211270,19211265,20111261,20111420,20211405,-,-,-,-,-,-,-,-,-,-,-,-,-
-10,Jithin K Sreedharan,-,2,2,-,-,-,-,-,-,-,-,-,-,PhD,MS,MTech,BT-MT (Dual),-,-,-,-,-
+10,Jithin K Sreedharan,LAB TA,2,2,-,-,-,-,-,-,-,-,-,-,PhD,MS,MTech,BT-MT (Dual),-,-,-,-,-
 11,Mainak Chaudhuri,CS330,6,8,-,-,-,-,-,-,-,-,-,-,PhD,MTech,MS,BT-MT (Dual),-,-,-,-,-
 12,Manindra Agrawal,CS340,6,6,,,,,,,,,,,,,,,,,,,
 13,Nisheeth Srivastava,ESC101/2,16,16,,,,,,,,,,,,,,,,,,,

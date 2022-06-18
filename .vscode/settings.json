@@ -2,7 +2,8 @@
     "files.associations": {
         "iosfwd": "cpp",
         "tuple": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "iostream": "cpp"
     },
     "code-runner.executorMap": {
 
