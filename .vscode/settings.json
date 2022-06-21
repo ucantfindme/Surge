@@ -3,7 +3,9 @@
         "iosfwd": "cpp",
         "tuple": "cpp",
         "queue": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "__tree": "cpp",
+        "map": "cpp"
     },
     "code-runner.executorMap": {
 
