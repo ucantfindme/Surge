@@ -63,8 +63,9 @@ void assignCourseOptimal(map<string,Course>coursemap,map<string,Student>studentm
             if(it!=i.second.prefTA.end())p1=it-i.second.prefTA.begin();
             it=find(i.second.prefProg.begin(),i.second.prefProg.end(),j.second.deg);
             if(it!=i.second.prefProg.end())p2=it-i.second.prefProg.begin();
-            studentprioritycoursemap[course].push(make_tuple(p1,p2,student));
+            studentprioritycoursemap[course].push(make_tuple(-p1,-p2,student));
         }
+        cout<<course<<" "<<get<0>(studentprioritycoursemap[course].top())<<" "<<get<1>(studentprioritycoursemap[course].top())<<" "<<get<2>(studentprioritycoursemap[course].top())<<"\n";
         unassignedcourses.push(course);
     }
     while(!unassignedcourses.empty()){

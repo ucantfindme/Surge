@@ -112,7 +112,7 @@ void assignStudentOptimal(map<string,Course>coursemap,map<string,Student>student
                     nonpriorStudents[course.second.prefProg[i]].pop();
                     //cout<<student<<" "<<np<<"\n";
                     np--;
-                    tuple<int,int,string>pri=make_tuple(-INT32_MAX,-i,student);
+                    tuple<int,int,string>pri=make_tuple(INT32_MAX,-i,student);
                     coursemap[course.first].assignedTAs.push(pri);
                     studentmap[student].assigned=course.first;
                     break;
@@ -125,7 +125,7 @@ void assignStudentOptimal(map<string,Course>coursemap,map<string,Student>student
                         nonpriorStudents[i.first].pop();
                         //cout<<student<<" "<<np<<"\n";
                         np--;
-                        tuple<int,int,string>pri=make_tuple(-INT32_MAX,-INT32_MAX,student);
+                        tuple<int,int,string>pri=make_tuple(INT32_MAX,INT32_MAX,student);
                         coursemap[course.first].assignedTAs.push(pri);
                         studentmap[student].assigned=course.first;
                         break;
