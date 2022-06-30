@@ -16,7 +16,7 @@ class Course{
         int lenprefTA;
         vector<string> prefProg;
         int lenprefProg;
-        vector<string> assignedTAs;
+        int assignedTAs;
         Course(string id="",int maxTAs=0,vector<string> prefTAList={},vector<string> prefProgList={},int n=0,int m=0){
             cid=id;
             tasReq=maxTAs;
@@ -24,19 +24,24 @@ class Course{
             prefProg=prefProgList;
             lenprefTA=n;
             lenprefProg=m;
+            assignedTAs=0;
         }
 };
 
 class Student{
     public:
+        string name;
+        string email;
         string sid;
         string deg;
         vector<string> prefCourses;
         int lenprefCourse;
         int top;
         string assigned;
-        Student(string id="",string degree="",vector<string> prefCou={},int n=0){
+        Student(string na="",string em="",string id="",string degree="",vector<string> prefCou={},int n=0){
             sid=id;
+            name=na;
+            email=em;
             deg=degree;
             prefCourses=prefCou;
             lenprefCourse=n;
@@ -46,82 +51,93 @@ class Student{
 };
 
 void assignCourseOptimal(map<string,Course>coursemap,map<string,Student>studentmap){
-    map<string,priority_queue<tuple<int,int,string> > >studentprioritycoursemap;
-    map<string,queue<string> >degreemap;
-    for(auto i:studentmap){
-        string deg = studentmap[i.first].deg;
-        degreemap[deg].push(i.first);
-    }
-    //cout<<"ok1"<<"\n";
-    queue<string>unassignedcourses;
-    for(auto i: coursemap){
-        string course=i.first;
-        for(auto j: studentmap){
-            string student=j.first;
-            auto it=find(i.second.prefTA.begin(),i.second.prefTA.end(),student);
-            int p1=INT32_MAX,p2=INT32_MAX;
-            if(it!=i.second.prefTA.end())p1=it-i.second.prefTA.begin();
-            it=find(i.second.prefProg.begin(),i.second.prefProg.end(),j.second.deg);
-            if(it!=i.second.prefProg.end())p2=it-i.second.prefProg.begin();
-            studentprioritycoursemap[course].push(make_tuple(-p1,-p2,student));
+    int m=coursemap.size(),n=studentmap.size();
+    map<string,vector<tuple<int,int,string> > >coursestudentpriority;
+    map<string,vector<tuple<int,string> > >studentcoursepriority;
+    map<string,map<string,tuple<int,int,string> > >coursestudentprioritymap;
+    map<string,map<string,tuple<int,string> > >studentcourseprioritymap;
+    for(auto student:studentmap){
+        for(auto course:coursemap){
+            int p1=-1000,p2=-1000;
+            for(int x=0;x<course.second.lenprefTA;x++){
+                if(course.second.prefTA[x]==student.first){
+                    p1=-x;
+                    break;
+                }
+            }
+            for(int x=0;x<course.second.lenprefProg;x++){
+                if(course.second.prefProg[x]==student.second.deg){
+                    p2=-x;
+                    break;
+                }
+            }
+            coursestudentpriority[course.first].push_back(make_tuple(p1,p2,student.first));
+            coursestudentprioritymap[course.first][student.first]=make_tuple(p1,p2,student.first);
+            p1=-1000;
+            for(int x=0;x<student.second.lenprefCourse;x++){
+                if(student.second.prefCourses[x]==course.first){
+                    p1=-x;
+                    break;
+                }
+            }
+            studentcoursepriority[student.first].push_back(make_tuple(p1,course.first));
+            studentcourseprioritymap[student.first][course.first]=make_tuple(p1,course.first);
         }
-        cout<<course<<" "<<get<0>(studentprioritycoursemap[course].top())<<" "<<get<1>(studentprioritycoursemap[course].top())<<" "<<get<2>(studentprioritycoursemap[course].top())<<"\n";
-        unassignedcourses.push(course);
     }
-    while(!unassignedcourses.empty()){
-        string course=unassignedcourses.front();
-        unassignedcourses.pop();
-        if(coursemap[course].assignedTAs.size()==coursemap[course].tasReq)continue;
-        if(studentprioritycoursemap[course].empty())continue;
-        string student=get<2>(studentprioritycoursemap[course].top());
-        studentprioritycoursemap[course].pop();
+    for(auto student:studentcoursepriority){
+        sort(studentcoursepriority[student.first].begin(),studentcoursepriority[student.first].end());
+    }
+    queue<string>coursequeue;
+    for(auto course:coursestudentpriority){
+        coursequeue.push(course.first);
+        sort(coursestudentpriority[course.first].begin(),coursestudentpriority[course.first].end());
+    }
+    while(!coursequeue.empty()){
+        string course=coursequeue.front();
+        if(coursemap[course].assignedTAs==coursemap[course].tasReq || coursestudentpriority[course].empty()){
+            coursequeue.pop();
+            continue;
+        }
+        string student=get<2>(*coursestudentpriority[course].rbegin());
+        coursestudentpriority[course].pop_back();
         if(studentmap[student].assigned=="-"){
+            coursemap[course].assignedTAs++;
             studentmap[student].assigned=course;
-            coursemap[course].assignedTAs.push_back(student);
         }
         else{
-            string previouslyassignedcourse=studentmap[student].assigned;
-            auto it1=find(studentmap[student].prefCourses.begin(),studentmap[student].prefCourses.end(),course);
-            auto it2=find(studentmap[student].prefCourses.begin(),studentmap[student].prefCourses.end(),previouslyassignedcourse);
-            if(it1<it2){
+            string presentcourse=studentmap[student].assigned;
+            if(studentcourseprioritymap[student][course]>studentcourseprioritymap[student][presentcourse]){
                 studentmap[student].assigned=course;
-                //cout<<course<<"\n";
-                auto it=find(coursemap[previouslyassignedcourse].assignedTAs.begin(),coursemap[previouslyassignedcourse].assignedTAs.end(),student);
-                //cout<<previouslyassignedcourse<<"\n";
-                //cout<<it-coursemap[previouslyassignedcourse].assignedTAs.begin()<<" "<<coursemap[previouslyassignedcourse].assignedTAs.size()<<"\n";
-                coursemap[previouslyassignedcourse].assignedTAs.erase(it);
-                coursemap[course].assignedTAs.push_back(student);
-                unassignedcourses.push(previouslyassignedcourse);
+                coursequeue.push(presentcourse);
             }
         }
-        unassignedcourses.push(course);
     }
-    fstream fout;
-    fout.open("ouputCourseAssignmentViaCourseOptimal.csv",ios::out);
-    fout<<"CourseID,AssignedTA-1,AssignedTA-2,AssignedTA-3,AssignedTA-4,AssignedTA-5,AssignedTA-6,AssignedTA-7,AssignedTA-8,AssignedTA-9,AssignedTA-10,AssignedTA-11,AssignedTA-12,AssignedTA-13,AssignedTA-14,AssignedTA-15,AssignedTA-16\n";
-    int req=0;
-    for(auto i: coursemap){
-        req+=i.second.tasReq;
-        //cout<<i.first<<" "<<i.second.tasReq<<" "<<i.second.assignedTAs.size()<<"\n";
-        string s=i.first+",";
-        vector<string>temp=i.second.assignedTAs;
-        for(int j=0;j<16;j++){
-            if(j>=temp.size()){
-                if(j==15)s+="\n";
-                else s+=",";
-            }
-            else{
-                if(j==15)s+=temp[j]+"\n";
-                else s+=temp[j]+",";
-            }
-        }
-        fout<<s;
+    int k=0;
+    for(auto course:coursemap){
+        k+=course.second.tasReq;
+        cout<<"CourseID: "<<course.first<<"\n";
+        cout<<"required TAs: "<<course.second.tasReq<<"\n";
+        cout<<"Number of TAs Assigned: "<<course.second.assignedTAs<<"\n";
+        cout<<"Size of priorityqueue: "<<coursestudentpriority[course.first].size()<<"\n\n";
+
     }
+    cout<<k<<" "<<studentcoursepriority.size()<<"\n";
     fstream fout1;
-    fout1.open("ouputStudentAssignmentViaCourseOptimal.csv",ios::out);
-    fout1<<"StudentID,Assigned Course\n";
-    for(auto i: studentmap)fout1<<i.first+","+i.second.assigned+"\n";
+    fout1.open("myouput.csv",ios::out);
+    fout1<<"S.No,Name,Roll No,Email,Degree,Course Allocated\n";
+    int sno=1;
+    for(auto i: studentmap){
+        fout1<<sno++<<","+i.second.name+","+i.first+","+i.second.email+","+i.second.deg+","+i.second.assigned+"\n";
+    }
     //cout<<req<<" "<<studentmap.size()<<"\n";
+    map<string,string>obtainedoutputmap;
+    vector<string>studentlist;
+    for(auto i:studentmap){
+        string student=i.first;
+        studentlist.push_back(student);
+        string course=i.second.assigned;
+        obtainedoutputmap[student]=course;
+    }
 }
 
 vector<vector<string> > getfilecontents(string fname){
@@ -141,12 +157,14 @@ vector<vector<string> > getfilecontents(string fname){
     else cout<<"Could not open the file\n";
     return content;
 }
+
 int main(){
-    string coursefile = "2022-23-I-FacultyChoices.csv";
-    string studentfile = "2022-23-I-StudentChoices.csv";
-    vector<vector<string> >coursedata,studentdata;
+    string coursefile = "input2_new.csv";
+    string studentfile = "input1_new.csv";
+    vector<vector<string> >coursedata,studentdata,out;
     coursedata=getfilecontents(coursefile);
     studentdata=getfilecontents(studentfile);
+    out=getfilecontents("output.csv");
 
     map<string,Course> coursemap;
     for(int i=1;i<coursedata.size();i++){
@@ -174,14 +192,23 @@ int main(){
     for(int i=1;i<studentdata.size();i++){
         string id=studentdata[i][1];
         string deg=studentdata[i][4];
+        string name=studentdata[i][3];
+        string email=studentdata[i][2];
         vector<string> prefCou;
         for(int j=8;j<38;j++){
             if(coursemap.find(studentdata[i][j])==coursemap.end())continue;
             prefCou.push_back(studentdata[i][j]);
         }
         int n=prefCou.size();
-        studentmap[id]=*new Student(id,deg,prefCou,n);
+        studentmap[id]=*new Student(name,email,id,deg,prefCou,n);
         //cout<<id<<"\n";
+    }
+
+    map<string,string>outputmap;
+    for(int i=0;i<out.size();i++){
+        string student=out[i][2];
+        string course=out[i][5];
+        outputmap[student]=course;
     }
     //cout<<"ok1"<<"\n";
     assignCourseOptimal(coursemap,studentmap);

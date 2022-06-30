@@ -29,14 +29,18 @@ class Course{
 
 class Student{
     public:
+        string name;
+        string email;
         string sid;
         string deg;
         vector<string> prefCourses;
         int lenprefCourse;
         int top;
         string assigned;
-        Student(string id="",string degree="",vector<string> prefCou={},int n=0){
+        Student(string na="",string em="",string id="",string degree="",vector<string> prefCou={},int n=0){
             sid=id;
+            name=na;
+            email=em;
             deg=degree;
             prefCourses=prefCou;
             lenprefCourse=n;
@@ -45,7 +49,7 @@ class Student{
         }
 };
 
-void assignStudentOptimal(map<string,Course>coursemap,map<string,Student>studentmap){
+void assignStudentOptimal(map<string,Course>coursemap,map<string,Student>studentmap,map<string,string>outputmap){
     int m=coursemap.size(),n=studentmap.size();
     queue<string>priorStudents;
     map<string,queue<string> >nonpriorStudents;
@@ -162,10 +166,25 @@ void assignStudentOptimal(map<string,Course>coursemap,map<string,Student>student
         fout<<s;
     }
     fstream fout1;
-    fout1.open("ouputStudentAssignment.csv",ios::out);
-    fout1<<"StudentID,Assigned Course\n";
-    for(auto i: studentmap)fout1<<i.first+","+i.second.assigned+"\n";
+    fout1.open("ouputStudentAssignmentViaCourseOptimal.csv",ios::out);
+    fout1<<"S.No.,Name,Roll No,Email,Degree,Course Allocated\n";
+    int sno=1;
+    for(auto i: studentmap){
+        fout1<<sno++<<","+i.second.name+","+i.first+","+i.second.email+","+i.second.deg+","+i.second.assigned+"\n";
+    }
     //cout<<req<<" "<<studentmap.size()<<"\n";
+    map<string,string>obtainedoutputmap;
+    int right=0;
+    int total=studentmap.size();
+    vector<string>studentlist;
+    for(auto i:studentmap){
+        string student=i.first;
+        studentlist.push_back(student);
+        string course=i.second.assigned;
+        obtainedoutputmap[student]=course;
+        if(outputmap[student]==course)right++;
+    }
+    cout<<right<<" "<<total<<"\n";
 }
 vector<vector<string> > getfilecontents(string fname){
     vector<vector<string> > content;
@@ -185,11 +204,12 @@ vector<vector<string> > getfilecontents(string fname){
     return content;
 }
 int main(){
-    string coursefile = "2022-23-I-FacultyChoices.csv";
-    string studentfile = "2022-23-I-StudentChoices.csv";
-    vector<vector<string> >coursedata,studentdata;
+    string coursefile = "input2_new.csv";
+    string studentfile = "input1_new.csv";
+    vector<vector<string> >coursedata,studentdata,out;
     coursedata=getfilecontents(coursefile);
     studentdata=getfilecontents(studentfile);
+    out=getfilecontents("output.csv");
 
     map<string,Course> coursemap;
     for(int i=1;i<coursedata.size();i++){
@@ -217,16 +237,26 @@ int main(){
     for(int i=1;i<studentdata.size();i++){
         string id=studentdata[i][1];
         string deg=studentdata[i][4];
+        string name=studentdata[i][3];
+        string email=studentdata[i][2];
         vector<string> prefCou;
         for(int j=8;j<38;j++){
             if(coursemap.find(studentdata[i][j])==coursemap.end())continue;
             prefCou.push_back(studentdata[i][j]);
         }
         int n=prefCou.size();
-        studentmap[id]=*new Student(id,deg,prefCou,n);
+        studentmap[id]=*new Student(name,email,id,deg,prefCou,n);
         //cout<<id<<"\n";
     }
-    assignStudentOptimal(coursemap,studentmap);
+
+    map<string,string>outputmap;
+    for(int i=0;i<out.size();i++){
+        string student=out[i][2];
+        string course=out[i][5];
+        outputmap[student]=course;
+    }
+    //cout<<"ok1"<<"\n";
+    assignStudentOptimal(coursemap,studentmap,outputmap);
     //for(auto i:studentmap)cout<<i.first<<" "<<i.second.deg<<"\n";
     return 0;
 }
