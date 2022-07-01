@@ -50,47 +50,35 @@ class Student{
         }
 };
 
-void assignCourseOptimal(map<string,Course>coursemap,map<string,Student>studentmap){
-    int m=coursemap.size(),n=studentmap.size();
-    map<string,vector<tuple<int,int,string> > >coursestudentpriority;
-    map<string,vector<tuple<int,string> > >studentcoursepriority;
-    map<string,map<string,tuple<int,int,string> > >coursestudentprioritymap;
-    map<string,map<string,tuple<int,string> > >studentcourseprioritymap;
-    for(auto student:studentmap){
-        for(auto course:coursemap){
-            int p1=-1000,p2=-1000;
-            for(int x=0;x<course.second.lenprefTA;x++){
-                if(course.second.prefTA[x]==student.first){
-                    p1=-x;
+bool validate(int n,int m,map<string,Course>coursemap,map<string,map<string,int> >courseStudentrank,map<string,vector<tuple<int,int,string> > >coursestudentpriority,map<string,vector<tuple<int,string> > >studentcoursepriority,map<string,string>assigned){
+    int t=0;
+    for(auto stu:studentcoursepriority){
+        string student=stu.first;
+        reverse(studentcoursepriority[student].begin(),studentcoursepriority[student].end());
+        for(auto j: studentcoursepriority[student]){
+            string course=get<1>(j);
+            //cout<<"\n"<<student<<"\n";
+            if(course!=assigned[student]){
+                //cout<<course<<"\n";
+                if(n-coursestudentpriority[course].size()>courseStudentrank[course][student]){
+                    t++;
+                    //cout<<student<<" was not given this course "<<course<<"\n";
                     break;
+                    //return false;
                 }
             }
-            for(int x=0;x<course.second.lenprefProg;x++){
-                if(course.second.prefProg[x]==student.second.deg){
-                    p2=-x;
-                    break;
-                }
-            }
-            coursestudentpriority[course.first].push_back(make_tuple(p1,p2,student.first));
-            coursestudentprioritymap[course.first][student.first]=make_tuple(p1,p2,student.first);
-            p1=-1000;
-            for(int x=0;x<student.second.lenprefCourse;x++){
-                if(student.second.prefCourses[x]==course.first){
-                    p1=-x;
-                    break;
-                }
-            }
-            studentcoursepriority[student.first].push_back(make_tuple(p1,course.first));
-            studentcourseprioritymap[student.first][course.first]=make_tuple(p1,course.first);
+            else break;
         }
     }
-    for(auto student:studentcoursepriority){
-        sort(studentcoursepriority[student.first].begin(),studentcoursepriority[student.first].end());
-    }
+    if(t==0)cout<<"Output Validated Successfully!\n";
+    else cout<<"Number of unstable assignments: "<<t<<"\n";
+    return true;
+}
+
+void assignCourseOptimal(int n,int m,map<string,Course>&coursemap,map<string,Student>&studentmap,map<string,vector<tuple<int,int,string> > >&coursestudentpriority,map<string,vector<tuple<int,string> > >studentcoursepriority,map<string,map<string,tuple<int,int,string> > >coursestudentprioritymap,map<string,map<string,tuple<int,string> > >studentcourseprioritymap){
     queue<string>coursequeue;
     for(auto course:coursestudentpriority){
         coursequeue.push(course.first);
-        sort(coursestudentpriority[course.first].begin(),coursestudentpriority[course.first].end());
     }
     while(!coursequeue.empty()){
         string course=coursequeue.front();
@@ -107,37 +95,21 @@ void assignCourseOptimal(map<string,Course>coursemap,map<string,Student>studentm
         else{
             string presentcourse=studentmap[student].assigned;
             if(studentcourseprioritymap[student][course]>studentcourseprioritymap[student][presentcourse]){
+                coursemap[course].assignedTAs++;
+                coursemap[presentcourse].assignedTAs--;
                 studentmap[student].assigned=course;
                 coursequeue.push(presentcourse);
             }
         }
     }
-    int k=0;
-    for(auto course:coursemap){
-        k+=course.second.tasReq;
-        cout<<"CourseID: "<<course.first<<"\n";
-        cout<<"required TAs: "<<course.second.tasReq<<"\n";
-        cout<<"Number of TAs Assigned: "<<course.second.assignedTAs<<"\n";
-        cout<<"Size of priorityqueue: "<<coursestudentpriority[course.first].size()<<"\n\n";
-
-    }
-    cout<<k<<" "<<studentcoursepriority.size()<<"\n";
     fstream fout1;
-    fout1.open("myouput.csv",ios::out);
-    fout1<<"S.No,Name,Roll No,Email,Degree,Course Allocated\n";
+    fout1.open("myoutput.csv",ios::out);
+    fout1<<"S.No.,Name,Roll No,Email,Degree,Course Allocated\n";
     int sno=1;
     for(auto i: studentmap){
         fout1<<sno++<<","+i.second.name+","+i.first+","+i.second.email+","+i.second.deg+","+i.second.assigned+"\n";
     }
-    //cout<<req<<" "<<studentmap.size()<<"\n";
-    map<string,string>obtainedoutputmap;
-    vector<string>studentlist;
-    for(auto i:studentmap){
-        string student=i.first;
-        studentlist.push_back(student);
-        string course=i.second.assigned;
-        obtainedoutputmap[student]=course;
-    }
+    fout1.close();
 }
 
 vector<vector<string> > getfilecontents(string fname){
@@ -161,10 +133,9 @@ vector<vector<string> > getfilecontents(string fname){
 int main(){
     string coursefile = "input2_new.csv";
     string studentfile = "input1_new.csv";
-    vector<vector<string> >coursedata,studentdata,out;
+    vector<vector<string> >coursedata,studentdata;
     coursedata=getfilecontents(coursefile);
     studentdata=getfilecontents(studentfile);
-    out=getfilecontents("output.csv");
 
     map<string,Course> coursemap;
     for(int i=1;i<coursedata.size();i++){
@@ -203,15 +174,70 @@ int main(){
         studentmap[id]=*new Student(name,email,id,deg,prefCou,n);
         //cout<<id<<"\n";
     }
-
-    map<string,string>outputmap;
-    for(int i=0;i<out.size();i++){
-        string student=out[i][2];
-        string course=out[i][5];
-        outputmap[student]=course;
+    
+    int n=studentmap.size(),m=coursemap.size();
+    map<string,vector<tuple<int,int,string> > >coursestudentpriority;
+    map<string,vector<tuple<int,string> > >studentcoursepriority;
+    map<string,map<string,tuple<int,int,string> > >coursestudentprioritymap;
+    map<string,map<string,tuple<int,string> > >studentcourseprioritymap;
+    map<string,map<string,int> >courseStudentrank;
+    for(auto student:studentmap){
+        for(auto course:coursemap){
+            int p1=-1000,p2=-1000;
+            for(int x=0;x<course.second.lenprefTA;x++){
+                if(course.second.prefTA[x]==student.first){
+                    p1=-x;
+                    break;
+                }
+            }
+            for(int x=0;x<course.second.lenprefProg;x++){
+                if(course.second.prefProg[x]==student.second.deg){
+                    p2=-x;
+                    break;
+                }
+            }
+            coursestudentpriority[course.first].push_back(make_tuple(p1,p2,student.first));
+            coursestudentprioritymap[course.first][student.first]=make_tuple(p1,p2,student.first);
+            p1=-1000;
+            for(int x=0;x<student.second.lenprefCourse;x++){
+                if(student.second.prefCourses[x]==course.first){
+                    p1=-x;
+                    break;
+                }
+            }
+            studentcoursepriority[student.first].push_back(make_tuple(p1,course.first));
+            studentcourseprioritymap[student.first][course.first]=make_tuple(p1,course.first);
+        }
     }
-    //cout<<"ok1"<<"\n";
-    assignCourseOptimal(coursemap,studentmap);
-    //for(auto i:studentmap)cout<<i.first<<" "<<i.second.deg<<"\n";
+    for(auto student:studentcoursepriority){
+        sort(studentcoursepriority[student.first].begin(),studentcoursepriority[student.first].end());
+    }
+    for(auto course:coursestudentpriority){
+        sort(coursestudentpriority[course.first].begin(),coursestudentpriority[course.first].end());
+    }
+    for(auto course:coursemap){
+        int rk=0;
+        for(auto student:coursestudentpriority[course.first]){
+            courseStudentrank[course.first][get<2>(student)]=n-rk++;
+        }
+    }
+
+    assignCourseOptimal(n,m,coursemap,studentmap,coursestudentpriority,studentcoursepriority,coursestudentprioritymap,studentcourseprioritymap);
+
+    string testoutputfile = "output.csv";
+    string myoutputfile = "myoutput.csv";
+    vector<vector<string> >testout,myout;
+    testout=getfilecontents(testoutputfile);
+    myout=getfilecontents(myoutputfile);
+    map<string,string>testmap,mymap;
+    int tot=testout.size();
+    for(int i=1;i<tot;i++){
+        testmap[testout[i][2]]=testout[i][5];
+        mymap[myout[i][2]]=myout[i][5];
+    }
+    
+    bool mycode=validate(n,m,coursemap,courseStudentrank,coursestudentpriority,studentcoursepriority,mymap);
+    bool given=validate(n,m,coursemap,courseStudentrank,coursestudentpriority,studentcoursepriority,testmap);
+
     return 0;
 }
