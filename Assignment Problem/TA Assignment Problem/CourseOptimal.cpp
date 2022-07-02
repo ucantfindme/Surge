@@ -8,6 +8,7 @@
 #include<map>
 using namespace std;
 
+//Course Class
 class Course{
     public:
         string cid;
@@ -28,6 +29,7 @@ class Course{
         }
 };
 
+//Student Class
 class Student{
     public:
         string name;
@@ -50,21 +52,18 @@ class Student{
         }
 };
 
-bool validate(int n,int m,map<string,Course>coursemap,map<string,map<string,int> >courseStudentrank,map<string,vector<tuple<int,int,string> > >coursestudentpriority,map<string,vector<tuple<int,string> > >studentcoursepriority,map<string,string>assigned){
+//Validate module
+void validate(int n,int m,map<string,Course>&coursemap,map<string,map<string,int> >&courseStudentrank,map<string,vector<tuple<int,int,string> > >&coursestudentpriority,map<string,vector<tuple<int,string> > >&studentcoursepriority,map<string,string>&assigned){
     int t=0;
     for(auto stu:studentcoursepriority){
         string student=stu.first;
         reverse(studentcoursepriority[student].begin(),studentcoursepriority[student].end());
         for(auto j: studentcoursepriority[student]){
             string course=get<1>(j);
-            //cout<<"\n"<<student<<"\n";
             if(course!=assigned[student]){
-                //cout<<course<<"\n";
                 if(n-coursestudentpriority[course].size()>courseStudentrank[course][student]){
                     t++;
-                    //cout<<student<<" was not given this course "<<course<<"\n";
                     break;
-                    //return false;
                 }
             }
             else break;
@@ -72,14 +71,11 @@ bool validate(int n,int m,map<string,Course>coursemap,map<string,map<string,int>
     }
     if(t==0)cout<<"Output Validated Successfully!\n";
     else cout<<"Number of unstable assignments: "<<t<<"\n";
-    return true;
 }
 
-void assignCourseOptimal(int n,int m,map<string,Course>&coursemap,map<string,Student>&studentmap,map<string,vector<tuple<int,int,string> > >&coursestudentpriority,map<string,vector<tuple<int,string> > >studentcoursepriority,map<string,map<string,tuple<int,int,string> > >coursestudentprioritymap,map<string,map<string,tuple<int,string> > >studentcourseprioritymap){
+void assignCourseOptimal(int n,int m,map<string,Course>&coursemap,map<string,Student>&studentmap,map<string,vector<tuple<int,int,string> > >&coursestudentpriority,map<string,vector<tuple<int,string> > >&studentcoursepriority,map<string,map<string,tuple<int,int,string> > >&coursestudentprioritymap,map<string,map<string,tuple<int,string> > >&studentcourseprioritymap){
     queue<string>coursequeue;
-    for(auto course:coursestudentpriority){
-        coursequeue.push(course.first);
-    }
+    for(auto course:coursestudentpriority)coursequeue.push(course.first);
     while(!coursequeue.empty()){
         string course=coursequeue.front();
         if(coursemap[course].assignedTAs==coursemap[course].tasReq || coursestudentpriority[course].empty()){
@@ -106,9 +102,7 @@ void assignCourseOptimal(int n,int m,map<string,Course>&coursemap,map<string,Stu
     fout1.open("myoutput.csv",ios::out);
     fout1<<"S.No.,Name,Roll No,Email,Degree,Course Allocated\n";
     int sno=1;
-    for(auto i: studentmap){
-        fout1<<sno++<<","+i.second.name+","+i.first+","+i.second.email+","+i.second.deg+","+i.second.assigned+"\n";
-    }
+    for(auto i: studentmap)fout1<<sno++<<","+i.second.name+","+i.first+","+i.second.email+","+i.second.deg+","+i.second.assigned+"\n";
     fout1.close();
 }
 
@@ -236,8 +230,15 @@ int main(){
         mymap[myout[i][2]]=myout[i][5];
     }
     
-    bool mycode=validate(n,m,coursemap,courseStudentrank,coursestudentpriority,studentcoursepriority,mymap);
-    bool given=validate(n,m,coursemap,courseStudentrank,coursestudentpriority,studentcoursepriority,testmap);
+    validate(n,m,coursemap,courseStudentrank,coursestudentpriority,studentcoursepriority,mymap);
+    //validate(n,m,coursemap,courseStudentrank,coursestudentpriority,studentcoursepriority,testmap);
+
+    fstream fout1;
+    fout1.open("mycount.csv",ios::out);
+    fout1<<"S.No.,Course,#TAs Requirement,#TAs Assigned\n";
+    int sno=1;
+    for(auto i: coursemap)fout1<<sno++<<","+i.first+","<<i.second.tasReq<<","<<i.second.assignedTAs<<"\n";
+    fout1.close();
 
     return 0;
 }
