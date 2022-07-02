@@ -33,14 +33,14 @@ class Course{
 //Student Class
 class Student{
     public:
-        string name;
-        string email;
-        string sid;
-        string deg;
-        vector<string> prefCourses;
-        int lenprefCourse;
-        int top;
-        string assigned;
+        string name;                    //Student's Name
+        string email;                   //Student's Email
+        string sid;                     //Student's Rollno
+        string deg;                     //Student's Degree
+        vector<string> prefCourses;     //Student's preference list orderded from most preferred to less
+        int lenprefCourse;              //Length of his preferred courses list        
+        string assigned;                //Student's Assigned Course (initially it's none)
+        //Constructor
         Student(string na="",string em="",string id="",string degree="",vector<string> prefCou={},int n=0){
             sid=id;
             name=na;
@@ -48,7 +48,6 @@ class Student{
             deg=degree;
             prefCourses=prefCou;
             lenprefCourse=n;
-            top=0;
             assigned="-";
         }
 };
