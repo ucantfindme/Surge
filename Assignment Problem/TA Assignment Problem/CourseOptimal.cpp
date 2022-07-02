@@ -11,13 +11,14 @@ using namespace std;
 //Course Class
 class Course{
     public:
-        string cid;
-        int tasReq;
-        vector<string> prefTA;
-        int lenprefTA;
-        vector<string> prefProg;
-        int lenprefProg;
-        int assignedTAs;
+        string cid;                     //CourseID 
+        int tasReq;                     //Number of TAs required
+        vector<string> prefTA;          //Vector containing preferred students from most preferred to least preferred
+        int lenprefTA;                  //Length of preferred students
+        vector<string> prefProg;        //Vector containing preferred degree from most preferred to least preferred
+        int lenprefProg;                //Length of preferred degrees
+        int assignedTAs;                //Number of students assigned to this course as TAs(initialised to 0)
+        //Constructor
         Course(string id="",int maxTAs=0,vector<string> prefTAList={},vector<string> prefProgList={},int n=0,int m=0){
             cid=id;
             tasReq=maxTAs;
