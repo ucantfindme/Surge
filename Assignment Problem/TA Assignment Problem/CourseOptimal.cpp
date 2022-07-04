@@ -18,6 +18,7 @@ class Course{
         vector<string> prefProg;        //Vector containing preferred degree from most preferred to least preferred
         int lenprefProg;                //Length of preferred degrees
         int assignedTAs;                //Number of students assigned to this course as TAs(initialised to 0)
+        int closingRank;                //closing-rank of the course
         //Constructor
         Course(string id="",int maxTAs=0,vector<string> prefTAList={},vector<string> prefProgList={},int n=0,int m=0){
             cid=id;
@@ -27,6 +28,7 @@ class Course{
             lenprefTA=n;
             lenprefProg=m;
             assignedTAs=0;
+            closingRank=0;
         }
 };
 
@@ -65,7 +67,7 @@ void validate(int n,int m,map<string,Course>&coursemap,map<string,map<string,int
             string course=get<1>(j);
             if(course!=assigned[student]){
                 //Here we check the priority rank of the student in the preference list of that course and the closing rank of that course
-                if(n-coursestudentpriority[course].size()>courseStudentrank[course][student]){
+                if(coursemap[course].closingRank>courseStudentrank[course][student]){
                     t++;
                     break;
                 }
@@ -94,6 +96,7 @@ void assignCourseOptimal(int n,int m,map<string,Course>&coursemap,map<string,Stu
         //get the highest preferred student on the course-student priority list 
         string student=get<2>(*coursestudentpriority[course].rbegin());
         coursestudentpriority[course].pop_back();
+        coursemap[course].closingRank++;
         //if the student is not assigned to any course
         if(studentmap[student].assigned=="-"){
             coursemap[course].assignedTAs++;
@@ -137,6 +140,19 @@ vector<vector<string> > getfilecontents(string fname){
     }
     else cout<<"Could not open the file\n";
     return content;
+}
+
+//Compare Outputs
+void compare(map<string,string>&assigned1,map<string,string>&assigned2){
+    //Writing differences into a CSV file
+    fstream fout1;
+    fout1.open("differences.csv",ios::out);
+    fout1<<"S.No.,Roll No,Course Allocated in given output,Course Allocated in myoutput\n";
+    int sno=1;
+    for(auto i: assigned1){
+        if(assigned1[i.first]!=assigned2[i.first])fout1<<sno++<<","+i.first+","+assigned1[i.first]+","+assigned2[i.first]+"\n";
+    }
+    fout1.close();
 }
 
 int main(){
@@ -262,6 +278,9 @@ int main(){
     //validate by checking if there are any unstable assignment
     validate(n,m,coursemap,courseStudentrank,coursestudentpriority,studentcoursepriority,mymap);
     //validate(n,m,coursemap,courseStudentrank,coursestudentpriority,studentcoursepriority,testmap);
+
+    //Difference in outputs
+    compare(testmap,mymap);
 
     //Write the requirement and assigned number of TAs to each course onto a CSV file
     fstream fout1;
