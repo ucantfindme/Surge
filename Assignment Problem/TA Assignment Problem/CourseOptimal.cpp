@@ -234,6 +234,7 @@ int main(){
                     break;
                 }
             }
+            if(p1==-1000 && p2==-1000)continue;
             coursestudentpriority[course.first].push_back(make_tuple(p1,p2,student.first));
             coursestudentprioritymap[course.first][student.first]=make_tuple(p1,p2,student.first);
             p1=-1000;
