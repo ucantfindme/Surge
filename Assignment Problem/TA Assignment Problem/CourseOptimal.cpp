@@ -11,22 +11,22 @@ using namespace std;
 //Course Class
 class Course{
     public:
-        string cid;                     //CourseID 
-        int tasReq;                     //Number of TAs required
-        vector<string> prefTA;          //Vector containing preferred students from most preferred to least preferred
-        int lenprefTA;                  //Length of preferred students
-        vector<string> prefProg;        //Vector containing preferred degree from most preferred to least preferred
-        int lenprefProg;                //Length of preferred degrees
-        int assignedTAs;                //Number of students assigned to this course as TAs(initialised to 0)
-        int closingRank;                //closing-rank of the course
+        string courseID;                                //CourseID 
+        int requiredNumberOfTAs;                        //Number of TAs required
+        vector<string> preferredStudentList;            //Vector containing preferred students from most preferred to least preferred
+        int lenpreferredStudentList;                    //Length of preferred students
+        vector<string> preferredDegreeList;             //Vector containing preferred degree from most preferred to least preferred
+        int lengthPreferredDegreeList;                  //Length of preferred degrees
+        int assignedTAs;                                //Number of students assigned to this course as TAs(initialised to 0)
+        int closingRank;                                //closing-rank of the course
         //Constructor
-        Course(string id="",int maxTAs=0,vector<string> prefTAList={},vector<string> prefProgList={},int n=0,int m=0){
-            cid=id;
-            tasReq=maxTAs;
-            prefTA=prefTAList;
-            prefProg=prefProgList;
-            lenprefTA=n;
-            lenprefProg=m;
+        Course(string id="",int maxTAs=0,vector<string> preferredStudentListList={},vector<string> preferredDegreeListList={},int n=0,int m=0){
+            courseID=id;
+            requiredNumberOfTAs=maxTAs;
+            preferredStudentList=preferredStudentListList;
+            preferredDegreeList=preferredDegreeListList;
+            lenpreferredStudentList=n;
+            lengthPreferredDegreeList=m;
             assignedTAs=0;
             closingRank=0;
         }
@@ -37,14 +37,14 @@ class Student{
     public:
         string name;                    //Student's Name
         string email;                   //Student's Email
-        string sid;                     //Student's Rollno
+        string studentRollNo;           //Student's Rollno
         string deg;                     //Student's Degree
         vector<string> prefCourses;     //Student's preference list orderded from most preferred to less
         int lenprefCourse;              //Length of his preferred courses list        
         string assigned;                //Student's Assigned Course (initially it's none)
         //Constructor
         Student(string na="",string em="",string id="",string degree="",vector<string> prefCou={},int n=0){
-            sid=id;
+            studentRollNo=id;
             name=na;
             email=em;
             deg=degree;
@@ -55,47 +55,48 @@ class Student{
 };
 
 //Validate module
-void validate(int n,int m,map<string,Course>&coursemap,map<string,map<string,int> >&courseStudentrank,map<string,vector<tuple<int,int,string> > >&coursestudentpriority,map<string,vector<tuple<int,string> > >&studentcoursepriority,map<string,string>&assigned){
+void validate(int n,int m,map<string,Course>&coursemap,map<string,map<string,int> >&courseStudentrank,map<string,vector<tuple<int,int,string> > >&courseStudentpriority,map<string,vector<tuple<int,string> > >&studentCoursePriority,map<string,string>&assigned){
     //This variable will be counter for number of students who are part of unstable assignment
-    int t=0;
-    for(auto stu:studentcoursepriority){
+    int unstableAssignedStudents=0;
+    for(auto stu:studentCoursePriority){
         string student=stu.first;
         //we reverse the priority list to get highest priority at the front
-        reverse(studentcoursepriority[student].begin(),studentcoursepriority[student].end());
+        reverse(studentCoursePriority[student].begin(),studentCoursePriority[student].end());
         //we run a loop till the student's assigned course
-        for(auto j: studentcoursepriority[student]){
+        for(auto j: studentCoursePriority[student]){
             string course=get<1>(j);
             if(course!=assigned[student]){
                 //Here we check the priority rank of the student in the preference list of that course and the closing rank of that course
-                if(coursemap[course].closingRank>courseStudentrank[course][student]){
-                    t++;
+                if(coursemap[course].closingRank>courseStudentrank[course][student] || coursemap[course].assignedTAs<coursemap[course].requiredNumberOfTAs){
+                    unstableAssignedStudents++;
                     break;
                 }
             }
+            //we dont need to check for the courses of equal or less prior than the present assigned course, hence we break out of the loop
             else break;
         }
     }
     //If t=0 that shows there's no unstable assignement
-    if(t==0)cout<<"Output Validated Successfully!\n";
-    else cout<<"Number of unstable assignments: "<<t<<"\n";
+    if(unstableAssignedStudents==0)cout<<"Output Validated Successfully!\n";
+    else cout<<"Number of unstable assignments: "<<unstableAssignedStudents<<"\n";
 }
 
 //Course-Optimal Assignment
-void assignCourseOptimal(int n,int m,map<string,Course>&coursemap,map<string,Student>&studentmap,map<string,vector<tuple<int,int,string> > >&coursestudentpriority,map<string,vector<tuple<int,string> > >&studentcoursepriority,map<string,map<string,tuple<int,int,string> > >&coursestudentprioritymap,map<string,map<string,tuple<int,string> > >&studentcourseprioritymap){
+void assignCourseOptimal(int n,int m,map<string,Course>&coursemap,map<string,Student>&studentmap,map<string,vector<tuple<int,int,string> > >&courseStudentpriority,map<string,vector<tuple<int,string> > >&studentCoursePriority,map<string,map<string,tuple<int,int,string> > >&courseStudentprioritymap,map<string,map<string,tuple<int,string> > >&studentCoursePrioritymap){
     //creating a course queue, initially containing all courses
     queue<string>coursequeue;
-    for(auto course:coursestudentpriority)coursequeue.push(course.first);
+    for(auto course:courseStudentpriority)coursequeue.push(course.first);
     //Until there are no courses left
     while(!coursequeue.empty()){
         string course=coursequeue.front();
         //if course has filled all the seats or it has offered to all the students, we can skip it
-        if(coursemap[course].assignedTAs==coursemap[course].tasReq || coursestudentpriority[course].empty()){
+        if(coursemap[course].assignedTAs==coursemap[course].requiredNumberOfTAs || courseStudentpriority[course].empty()){
             coursequeue.pop();
             continue;
         }
         //get the highest preferred student on the course-student priority list 
-        string student=get<2>(*coursestudentpriority[course].rbegin());
-        coursestudentpriority[course].pop_back();
+        string student=get<2>(*courseStudentpriority[course].rbegin());
+        courseStudentpriority[course].pop_back();
         coursemap[course].closingRank++;
         //if the student is not assigned to any course
         if(studentmap[student].assigned=="-"){
@@ -105,7 +106,7 @@ void assignCourseOptimal(int n,int m,map<string,Course>&coursemap,map<string,Stu
         else{
             string presentcourse=studentmap[student].assigned;
             //Here we check if the assigned course of this student is less prior to the course making offer
-            if(studentcourseprioritymap[student][course]>studentcourseprioritymap[student][presentcourse]){
+            if(studentCoursePrioritymap[student][course]>studentCoursePrioritymap[student][presentcourse]){
                 //if yes we assign the course to the student and take back previously assigned course into our course queue 
                 coursemap[course].assignedTAs++;
                 coursemap[presentcourse].assignedTAs--;
@@ -164,28 +165,30 @@ int main(){
     studentdata=getfilecontents(studentfile);
 
     //creating course objects from course records read from csv and storing them into a map with courseid as the key
+    //All the numbers in the indexing depicts the position of it in vector we obtained after loading csv
     map<string,Course> coursemap;
     for(int i=1;i<coursedata.size();i++){
         string id=coursedata[i][2];
         if(id=="-")continue;
         int maxTAs=atoi(&coursedata[i][4][0]);
         if(maxTAs<1)continue;
-        vector<string> prefTAList;
+        vector<string> preferredStudentList;
         for(int j=5;j<15;j++){
-            if(coursedata[i][j]!="-")prefTAList.push_back(coursedata[i][j]);
+            if(coursedata[i][j]!="-")preferredStudentList.push_back(coursedata[i][j]);
             else break;
         }
-        vector<string> prefProgList;
+        vector<string> preferredDegreeList;
         for(int j=15;j<19;j++){
-            if(coursedata[i][j]!="-")prefProgList.push_back(coursedata[i][j]);
+            if(coursedata[i][j]!="-")preferredDegreeList.push_back(coursedata[i][j]);
             else break;
         }
-        int n=prefTAList.size();
-        int m=prefProgList.size();
-        coursemap[id] = * new Course(id,maxTAs,prefTAList,prefProgList,n,m);
+        int n=preferredStudentList.size();
+        int m=preferredDegreeList.size();
+        coursemap[id] = * new Course(id,maxTAs,preferredStudentList,preferredDegreeList,n,m);
     }
 
     //creating student objects from student records read from csv and storing them into a map with student rollno as the key
+    //All the numbers in the indexing depicts the position of it in vector we obtained after loading csv
     map<string,Student>studentmap;
     for(int i=1;i<studentdata.size();i++){
         string id=studentdata[i][1];
@@ -204,16 +207,16 @@ int main(){
     int n=studentmap.size(),m=coursemap.size();
 
     //A map with courseid as key and value a vector containing the priorities of each student of that course
-    map<string,vector<tuple<int,int,string> > >coursestudentpriority;
+    map<string,vector<tuple<int,int,string> > >courseStudentpriority;
 
     //A map with studentid as key and value a vector containing the priorities  of each course of that student
-    map<string,vector<tuple<int,string> > >studentcoursepriority;
+    map<string,vector<tuple<int,string> > >studentCoursePriority;
 
     //this variable contains course's priority of the students(all) and storing them into nested map
-    map<string,map<string,tuple<int,int,string> > >coursestudentprioritymap;
+    map<string,map<string,tuple<int,int,string> > >courseStudentprioritymap;
 
     //this variable contains student's priority of the courses(all) and storing them into nested map
-    map<string,map<string,tuple<int,string> > >studentcourseprioritymap;
+    map<string,map<string,tuple<int,string> > >studentCoursePrioritymap;
 
     //A nested map to get the rank of a student in the preferrence of a course
     map<string,map<string,int> >courseStudentrank;
@@ -221,46 +224,58 @@ int main(){
     //Assigning priorities to each possible pair of student and course and storing them
     for(auto student:studentmap){
         for(auto course:coursemap){
+            //Here we set a lower-bound(here -1000(since the number of students is less than 200)), if the student is not preferred, we assign this reference priority and use the roll number as tie-breaker
             int p1=-1000,p2=-1000;
-            for(int x=0;x<course.second.lenprefTA;x++){
-                if(course.second.prefTA[x]==student.first){
+            //Now we look for position of student in course's preferrence list 
+            for(int x=0;x<course.second.lenpreferredStudentList;x++){
+                //if we find it we update p1 with the position and break out of the loop
+                if(course.second.preferredStudentList[x]==student.first){
                     p1=-x;
                     break;
                 }
             }
-            for(int x=0;x<course.second.lenprefProg;x++){
-                if(course.second.prefProg[x]==student.second.deg){
+            //Now we look for student's degree in course's preferred degree list
+            for(int x=0;x<course.second.lengthPreferredDegreeList;x++){
+                //if we find it we update p2 with the position and break out of the loop
+                if(course.second.preferredDegreeList[x]==student.second.deg){
                     p2=-x;
                     break;
                 }
             }
+            //If the student is not in the course's preferred list or the student's degree is not preferred by the course, we dont need to include student in creating priority list of the course
             if(p1==-1000 && p2==-1000)continue;
-            coursestudentpriority[course.first].push_back(make_tuple(p1,p2,student.first));
-            coursestudentprioritymap[course.first][student.first]=make_tuple(p1,p2,student.first);
+            //we create a tuple of p1, p2 and student's rollno
+            courseStudentpriority[course.first].push_back(make_tuple(p1,p2,student.first));
+            courseStudentprioritymap[course.first][student.first]=make_tuple(p1,p2,student.first);
+            //now we need to create a tuple to insert in student's preferred course, we again set a reference point(p1=-1000)
             p1=-1000;
+            //We check if the course if preferred by the student
             for(int x=0;x<student.second.lenprefCourse;x++){
+                //if yes we updaste p1 with the position of the course in the preferred list and break out of the loop
                 if(student.second.prefCourses[x]==course.first){
                     p1=-x;
                     break;
                 }
             }
-            studentcoursepriority[student.first].push_back(make_tuple(p1,course.first));
-            studentcourseprioritymap[student.first][course.first]=make_tuple(p1,course.first);
+            //we create a tuple with p1 and courseid and insert it into priority list of student's courses
+            studentCoursePriority[student.first].push_back(make_tuple(p1,course.first));
+            studentCoursePrioritymap[student.first][course.first]=make_tuple(p1,course.first);
         }
     }
     
     //sorting them to get a ordered priorities
-    for(auto student:studentcoursepriority)sort(studentcoursepriority[student.first].begin(),studentcoursepriority[student.first].end());
-    for(auto course:coursestudentpriority)sort(coursestudentpriority[course.first].begin(),coursestudentpriority[course.first].end());
+    for(auto student:studentCoursePriority)sort(studentCoursePriority[student.first].begin(),studentCoursePriority[student.first].end());
+    for(auto course:courseStudentpriority)sort(courseStudentpriority[course.first].begin(),courseStudentpriority[course.first].end());
     
     //Assigning ranks
     for(auto course:coursemap){
+        //initialise the rank=0
         int rk=0;
-        for(auto student:coursestudentpriority[course.first])courseStudentrank[course.first][get<2>(student)]=n-rk++;
+        for(auto student:courseStudentpriority[course.first])courseStudentrank[course.first][get<2>(student)]=n-rk++;
     }
 
     //Calling Assignment Module
-    assignCourseOptimal(n,m,coursemap,studentmap,coursestudentpriority,studentcoursepriority,coursestudentprioritymap,studentcourseprioritymap);
+    assignCourseOptimal(n,m,coursemap,studentmap,courseStudentpriority,studentCoursePriority,courseStudentprioritymap,studentCoursePrioritymap);
 
     //Validation
     //Load ouputs from csv
@@ -277,8 +292,8 @@ int main(){
     }
     
     //validate by checking if there are any unstable assignment
-    validate(n,m,coursemap,courseStudentrank,coursestudentpriority,studentcoursepriority,mymap);
-    //validate(n,m,coursemap,courseStudentrank,coursestudentpriority,studentcoursepriority,testmap);
+    validate(n,m,coursemap,courseStudentrank,courseStudentpriority,studentCoursePriority,mymap);
+    //validate(n,m,coursemap,courseStudentrank,courseStudentpriority,studentCoursePriority,testmap);
 
     //Difference in outputs
     compare(testmap,mymap);
@@ -288,7 +303,7 @@ int main(){
     fout1.open("mycount.csv",ios::out);
     fout1<<"S.No.,Course,#TAs Requirement,#TAs Assigned\n";
     int sno=1;
-    for(auto i: coursemap)fout1<<sno++<<","+i.first+","<<i.second.tasReq<<","<<i.second.assignedTAs<<"\n";
+    for(auto i: coursemap)fout1<<sno++<<","+i.first+","<<i.second.requiredNumberOfTAs<<","<<i.second.assignedTAs<<"\n";
     fout1.close();
 
     return 0;
