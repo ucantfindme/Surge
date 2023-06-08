@@ -1,0 +1,133 @@
+S.No.,Name,Roll No,Email,Degree,Course Allocated,Faculty
+1,Arun Kp,18111263,kparun@cse.iitk.ac.in,PhD,CS614,Debadatta Mishra
+2,Avideep Mukherjee,18111264,avideep@cse.iitk.ac.in,PhD,CS772,Piyush Rai
+3,Gourav Takhar,18111265,tgourav@cse.iitk.ac.in,PhD,CS771,Purushottam Kar
+4,Prateek Dwivedi,18111269,pdwivedi@cse.iitk.ac.in,PhD,CS648,Surender Baswana
+5,Soumya Banerjee,18111271,soumyab@cse.iitk.ac.in,PhD,CS772,Piyush Rai
+6,Subin Pulari,18111272,subinp@cse.iitk.ac.in,PhD,CS777,Sutanu Gayen
+7,Vikas Maurya,18111274,vikasmr@cse.iitk.ac.in,PhD,CS771,Purushottam Kar
+8,Waseem Akram,18111275,akram@cse.iitk.ac.in,PhD,CS648,Surender Baswana
+9,Pankaj Kumar Kalita,18211261,pkalita@cse.iitk.ac.in,PhD,DUGC TA,DUGC
+10,Sujit Kumar Muduli,18211262,smuduli@cse.iitk.ac.in,PhD,CS798E,Soumya Dutta
+11,Farzan Adil Byramji,18807259,farzan@cse.iitk.ac.in,MTI,CS640,Raghunath Tewari
+12,Rishik Jain,18807615,rishik@cse.iitk.ac.in,MTI,CS771,Purushottam Kar
+13,Aakash,19111261,aakashp@cse.iitk.ac.in,PhD,CS253,Indranil Saha
+14,Abhishek Jaiswal,19111262,abhijais@cse.iitk.ac.in,PhD,CS776,Priyanka Bagade
+15,Akavarapu Venkata Satya Durga Sai Mahesh,19111265,maheshak@cse.iitk.ac.in,PhD,CS315,Arnab Bhattacharya
+16,Bhargav C S,19111269,bhargav@cse.iitk.ac.in,PhD,CS202/3,Sunil Simon
+17,Sumit Lahiri,19111274,sumitl@cse.iitk.ac.in,PhD,CS253,Indranil Saha
+18,Vipin Patel,19111275,vipinpat@cse.iitk.ac.in,PhD,CS335,Swarnendu Biswas
+19,Chavhan Sujeet Yashavant,19211261,sujeetc@cse.iitk.ac.in,PhD,CS253,Indranil Saha
+20,Koustav Bhanja,19211263,kbhanja@cse.iitk.ac.in,PhD,CS202/3,Sunil Simon
+21,Neelabjo Shubhashis Choudhury,19211264,neelabjo@cse.iitk.ac.in,PhD,ESO207,Sanjeev Saxena
+22,Nitesh Trivedi,19211266,nitesht@cse.iitk.ac.in,PhD,CS315,Arnab Bhattacharya
+23,Shatroopa Saxena,19211270,ssaxena@cse.iitk.ac.in,PhD,CS253,Indranil Saha
+24,Vishal Singh,19211273,vshlsng@cse.iitk.ac.in,PhD,CS798E,Soumya Dutta
+25,Ajita Shree,20111262,ajitashree@cse.iitk.ac.in,PhD,CS771,Purushottam Kar
+26,Diptajit Roy,20111265,diptajit@cse.iitk.ac.in,PhD,CS688,Nitin Saxena
+27,Muzafar Ahmad Wani,20111271,muzafarwan@cse.iitk.ac.in,PhD,CS633,Preeti Malakar
+28,Pramit Bhattacharyya,20111272,pramitb@cse.iitk.ac.in,PhD,CS315,Arnab Bhattacharya
+29,Ronak Bhadra,20111275,ronakb@cse.iitk.ac.in,PhD,CS202/3,Sunil Simon
+30,Putrevu Mohan Anand,20111282,pmohan@cse.iitk.ac.in,PhD,CS771,Purushottam Kar
+31,Akhil S,20211262,akhis@cse.iitk.ac.in,PhD,CS648,Surender Baswana
+32,Abhinav Dudeja,21111001,abhinavd@cse.iitk.ac.in,M.Tech,CS253,Indranil Saha
+33,Abhishek Sahu,21111002,abhisheksa@cse.iitk.ac.in,M.Tech,CS498,Subhajit Roy
+34,Abhishek Dnyaneshwar Revskar,21111003,abhishekdr@cse.iitk.ac.in,M.Tech,CS335,Swarnendu Biswas
+35,Aditya Loth,21111004,adityal@cse.iitk.ac.in,M.Tech,CSXXX,Sruti Srinivasa Ragavan
+36,Akanksha Singh,21111005,akankshasi@cse.iitk.ac.in,M.Tech,CS315,Arnab Bhattacharya
+37,Akash Gajanan Panzade,21111006,akashp@cse.iitk.ac.in,M.Tech,CS335,Swarnendu Biswas
+38,Akshay Kumar Chittora,21111007,achittora@cse.iitk.ac.in,M.Tech,CSXXX,Sruti Srinivasa Ragavan
+39,Alok Kumar Trivedi,21111008,alokt@cse.iitk.ac.in,M.Tech,CS779,Ashutosh Modi
+40,Amar Raja Dibbu,21111009,amard@cse.iitk.ac.in,M.Tech,CS779,Ashutosh Modi
+41,Anirudh Nanduri,21111011,anirudhn@cse.iitk.ac.in,M.Tech,CS253,Indranil Saha
+42,Ankit Raja,21111012,ankitr@cse.iitk.ac.in,M.Tech,CS771,Purushottam Kar
+43,Anuj Shrivastava,21111013,anujsh@cse.iitk.ac.in,M.Tech,CS253,Indranil Saha
+44,Archi Gupta,21111014,archig@cse.iitk.ac.in,M.Tech,CS253,Indranil Saha
+45,Archit Gupta,21111015,garchit@cse.iitk.ac.in,M.Tech,CS253,Indranil Saha
+46,Arpan Kapoor,21111016,arpank@cse.iitk.ac.in,M.Tech,CS335,Swarnendu Biswas
+47,Ashitosh Vankatrao More,21111017,ashitoshvm@cse.iitk.ac.in,M.Tech,CS253,Indranil Saha
+48,Ashutosh Patel,21111018,ashutoshp@cse.iitk.ac.in,M.Tech,CS335,Swarnendu Biswas
+49,Ayush Sahni,21111019,sayush@cse.iitk.ac.in,M.Tech,CS771,Purushottam Kar
+50,Ayush Singh,21111020,ayushs@cse.iitk.ac.in,M.Tech,CS771,Purushottam Kar
+51,Binaya Kumar Suna,21111021,binayas@cse.iitk.ac.in,M.Tech,CS425,Amitangshu Pal
+52,Chabil Kansal,21111022,chabilk@cse.iitk.ac.in,M.Tech,CS779,Ashutosh Modi
+53,Deepak Kumar,21111023,dkumar@cse.iitk.ac.in,M.Tech,CS202/3,Sunil Simon
+54,Deepak Raj,21111024,deepakr@cse.iitk.ac.in,M.Tech,CS335,Swarnendu Biswas
+55,Dinkar Tewari,21111025,dinkart@cse.iitk.ac.in,M.Tech,CS335,Swarnendu Biswas
+56,Divyansh Bisht,21111027,dbisht@cse.iitk.ac.in,M.Tech,CS425,Amitangshu Pal
+57,Gajender Sharma,21111028,gajenders@cse.iitk.ac.in,M.Tech,CS771,Purushottam Kar
+58,Harishchandra Patidar,21111029,hpatidar@cse.iitk.ac.in,M.Tech,ESO207,Sanjeev Saxena
+59,Harsh Mukesh Agarwal,21111030,harshmag@cse.iitk.ac.in,M.Tech,ESO207,Sanjeev Saxena
+60,Idamakanti Venkata Nagarjun Reddy,21111031,nagarjunr@cse.iitk.ac.in,M.Tech,CS202/3,Sunil Simon
+61,Jeet Sarangi,21111032,jeets@cse.iitk.ac.in,M.Tech,CS771,Purushottam Kar
+62,Kajal Sethi,21111033,kajals@cse.iitk.ac.in,M.Tech,CS315,Arnab Bhattacharya
+63,Malkeet Singh Dhalla,21111035,malkeetsd@cse.iitk.ac.in,M.Tech,ESO207,Sanjeev Saxena
+64,Manish Kumar,21111037,manishk@cse.iitk.ac.in,M.Tech,CS202/3,Sunil Simon
+65,Manjyot Singh Harjit Singh Nanra,21111038,manjyots@cse.iitk.ac.in,M.Tech,CS771,Purushottam Kar
+66,Manthan Kojage,21111039,manthank@cse.iitk.ac.in,M.Tech,ESO207,Sanjeev Saxena
+67,Manu Shukla,21111040,manushukla@cse.iitk.ac.in,M.Tech,CS771,Purushottam Kar
+68,Mayuresh Diwakar Shandilya,21111041,mayuresh@cse.iitk.ac.in,M.Tech,CS220,Urbi Chatterjee
+69,Naman Rajput,21111043,namanraj@cse.iitk.ac.in,M.Tech,CS641,Manindra Agrawal
+70,Neeraj Chouhan,21111044,neerajch@cse.iitk.ac.in,M.Tech,ESO207,Sanjeev Saxena
+71,Nimit Jain,21111045,nimitj@cse.iitk.ac.in,M.Tech,CS220,Urbi Chatterjee
+72,Piyush Gangle,21111046,piyushg@cse.iitk.ac.in,M.Tech,CS220,Urbi Chatterjee
+73,Prajwal Pradiprao Thakare,21111047,prajwalt@cse.iitk.ac.in,M.Tech,CS220,Urbi Chatterjee
+74,Pranshu Sahijwani,21111048,pranshus@cse.iitk.ac.in,M.Tech,CS641,Manindra Agrawal
+75,Prashant Mishra,21111049,prashantm@cse.iitk.ac.in,M.Tech,CS771,Purushottam Kar
+76,Punit Arun Chaudhari,21111050,punitac@cse.iitk.ac.in,M.Tech,ESO207,Sanjeev Saxena
+77,Ravi Shankar Das,21111052,ravisd@cse.iitk.ac.in,M.Tech,ESO207,Sanjeev Saxena
+78,Rohit Kushwah,21111053,krohitk@cse.iitk.ac.in,M.Tech,CS771,Purushottam Kar
+79,Sharanya Saha,21111056,sharanya@cse.iitk.ac.in,M.Tech,CS771,Purushottam Kar
+80,Shivam Kharwar,21111058,skharwar@cse.iitk.ac.in,M.Tech,ESO207,Sanjeev Saxena
+81,Siddhartha Bura,21111059,siddhab@cse.iitk.ac.in,M.Tech,CS335,Swarnendu Biswas
+82,Tabish Ahmad,21111060,tabisha@cse.iitk.ac.in,M.Tech,CS771,Purushottam Kar
+83,Tanikella Sai Kiran,21111061,tskiran@cse.iitk.ac.in,M.Tech,CS779,Ashutosh Modi
+84,Thirumalareddy Abhishek Reddy,21111062,tareddy@cse.iitk.ac.in,M.Tech,CS633,Preeti Malakar
+85,Utkarsh Srivastava,21111063,utkarshs@cse.iitk.ac.in,M.Tech,CS641,Manindra Agrawal
+86,Varun Sunil Vankudre,21111064,varunsv@cse.iitk.ac.in,M.Tech,ESO207,Sanjeev Saxena
+87,Vatsal Singh,21111065,vsingh@cse.iitk.ac.in,M.Tech,ESO207,Sanjeev Saxena
+88,Vatsal Pramod Jha,21111066,vatsalpj@cse.iitk.ac.in,M.Tech,ESO207,Sanjeev Saxena
+89,Vikas,21111067,vikasv@cse.iitk.ac.in,M.Tech,CS220,Urbi Chatterjee
+90,Rahul Kumar,21111069,rahulkumar@cse.iitk.ac.in,M.Tech,CS779,Ashutosh Modi
+91,Anindya Ganguly,21111261,anindyag@cse.iitk.ac.in,PhD,CS641,Manindra Agrawal
+92,Ayushi Mishra,21111262,ayushim@cse.iitk.ac.in,PhD,CS776,Priyanka Bagade
+93,Gargi Sarkar,21111263,gsarkar@cse.iitk.ac.in,PhD,CS641,Manindra Agrawal
+94,Prajval Koul,21111267,prajvalk@cse.iitk.ac.in,PhD,CS202/3,Sunil Simon
+95,Sarbajit Ghosh,21111268,sarbajitg@cse.iitk.ac.in,PhD,CS315,Arnab Bhattacharya
+96,Subhajyoti Saha,21111269,subhajyoti@cse.iitk.ac.in,PhD,CS776,Priyanka Bagade
+97,Trishie Sharma,21111270,tsharma@cse.iitk.ac.in,PhD,CS315,Arnab Bhattacharya
+98,Rohit Singh,21111272,rsingh@cse.iitk.ac.in,PhD,CS614,Debadatta Mishra
+99,Virendra Nishad,21111273,viren@cse.iitk.ac.in,PhD,CS771,Purushottam Kar
+100,Arjun Singh,21111402,arjuns@cse.iitk.ac.in,M.S.,CS772,Piyush Rai
+101,Jegan Balaji B S,21111404,jeganb@cse.iitk.ac.in,M.S.,CS771,Purushottam Kar
+102,Mandar Kishor Dhake,21111405,mkdhake@cse.iitk.ac.in,M.S.,CS425,Amitangshu Pal
+103,Nishant Kiran Valvi,21111407,nkiranv@cse.iitk.ac.in,M.S.,CS776,Priyanka Bagade
+104,Shivam Tripathi,21111408,shivamtr@cse.iitk.ac.in,M.S.,CS771,Purushottam Kar
+105,Shubham Sinha,21111409,ssinha@cse.iitk.ac.in,M.S.,CS798E,Soumya Dutta
+106,Yash Prakash Patil,21111410,yashpp@cse.iitk.ac.in,M.S.,CS776,Priyanka Bagade
+107,Debdeep Paul Chaudhuri,21111413,debdeeppc@cse.iitk.ac.in,M.S.,CS771,Purushottam Kar
+108,Mayank Solanki,21111414,smayank@cse.iitk.ac.in,M.S.,CS335,Swarnendu Biswas
+109,Neelofar Hassan,21211263,neelofar@cse.iitk.ac.in,PhD,CS220,Urbi Chatterjee
+110,Deepak B Hegde,21211402,deepakbh@cse.iitk.ac.in,M.S.,CS633,Preeti Malakar
+111,Abhay Kumar Dwivedi,22111001,abhaykd@cse.iitk.ac.in,M.Tech,CS425,Amitangshu Pal
+112,Abhishek Kumar Pathak,22111002,akpathak@cse.iitk.ac.in,M.Tech,ESO207,Sanjeev Saxena
+113,Abhishek Raghuvanshi,22111003,abhishekr@cse.iitk.ac.in,M.Tech,CS425,Amitangshu Pal
+114,Abhivadan,22111004,abhivadan@cse.iitk.ac.in,M.Tech,CS798A,Debapriya Basu Roy
+115,Ajeet Kumar,22111005,ajeet@cse.iitk.ac.in,M.Tech,CS425,Amitangshu Pal
+116,Allan Robey,22111007,allan@cse.iitk.ac.in,M.Tech,CS425,Amitangshu Pal
+117,Ayush Kothiyal,22111015,ayushk@cse.iitk.ac.in,M.Tech,CS315,Arnab Bhattacharya
+118,Mitrajsinh Bharatsinh Chavda,22111077,mbchavda@cse.iitk.ac.in,M.Tech,ESO207,Sanjeev Saxena
+119,Sandula Lavanya,22111078,lavanyasandula@cse.iitk.ac.in,M.Tech,ESO207,Sanjeev Saxena
+120,Shrutika Anil Jadhav,22111082,shrutikaaj@cse.iitk.ac.in,M.Tech,ESO207,Sanjeev Saxena
+121,Srujana Sabbani,22111083,srujanasabbani@cse.iitk.ac.in,M.Tech,CS220,Urbi Chatterjee
+122,Malay Pandey,22111090,malay@cse.iitk.ac.in,M.Tech,CS772,Piyush Rai
+123,Anubhav Dixit,22111263,anubhavdixit@cse.iitk.ac.in,PhD,CS771,Purushottam Kar
+124,Ashutosh Deshwal,22111265,ashutosh@cse.iitk.ac.in,PhD,CS425,Amitangshu Pal
+125,Suraj Mandal,22111276,surajmandal@cse.iitk.ac.in,PhD,CS220,Urbi Chatterjee
+126,Chunduri Naga Venkata Hrushikesh,22111280,hrushicnv@cse.iitk.ac.in,PhD,CS771,Purushottam Kar
+127,Ayush Pande,22111281,ayushp@cse.iitk.ac.in,PhD,DPGC TA,Satyadev Nandakumar
+128,Kuruma Abhinav,22111401,abhinav@cse.iitk.ac.in,M.S.,CS798E,Soumya Dutta
+129,Mohit Singh,22111402,mohitsingh@cse.iitk.ac.in,M.S.,CS633,Preeti Malakar
+130,Rahul Aggarwal,22111403,rahulag@cse.iitk.ac.in,M.S.,CS633,Preeti Malakar
+131,Kriti Majumdar,22111404,kritim@cse.iitk.ac.in,M.S.,CS315,Arnab Bhattacharya
+132,Rumit Pingleshwar Gore,22111409,rumitgore@cse.iitk.ac.in,M.S.,CS798F,Sumit Ganguly
